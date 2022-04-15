@@ -1,4 +1,4 @@
-set(CPP_SRC mosquittopp.cpp mosquittopp.h)
+set(CPP_SRC mosquittopp.cpp ../../include/mosquittopp.h)
 
 add_library(mosquittopp SHARED
 	${CPP_SRC}

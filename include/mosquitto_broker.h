@@ -40,6 +40,8 @@ extern "C" {
 #include <time.h>
 
 #include <mosquitto.h>
+#include <mosquitto_plugin.h>
+#include <mqtt_protocol.h>
 
 struct mosquitto;
 typedef struct mqtt5__property mosquitto_property;

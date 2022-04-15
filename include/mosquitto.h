@@ -64,6 +64,8 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+#include <mqtt_protocol.h>
+
 #define LIBMOSQUITTO_MAJOR 2
 #define LIBMOSQUITTO_MINOR 1
 #define LIBMOSQUITTO_REVISION 0
