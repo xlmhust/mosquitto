@@ -130,7 +130,7 @@ WITH_OLD_KEEPALIVE=no
 
 # Use link time optimisation - note that enabling this currently prevents
 # broker plugins from working.
-WITH_LTO=yes
+#WITH_LTO=yes
 
 # Build with sqlite3 support - this enables the sqlite persistence plugin.
 WITH_SQLITE=yes
