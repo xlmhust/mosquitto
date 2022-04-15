@@ -814,7 +814,17 @@ BROKER_EXPORT int mosquitto_persist_base_msg_delete(uint64_t store_id)
 	struct mosquitto_base_msg *base_msg;
 
 	base_msg = find_store_msg(store_id);
-	db__msg_store_remove(base_msg, false);
+	if(base_msg && base_msg->ref_count == 0){
+		/* If ref count is zero, then we should delete this. It might seem
+		 * surprising that the ref count is zero already, but it can be. If ref
+		 * count is greater than zero then there may be e.g. a retained message
+		 * still referring to this and the retained message persist update is
+		 * coming later. If we delete the message now in that case, then when
+		 * the retain changes there will be use after free errors. All messages
+		 * will eventually hit ref count 0 and be removed in some way or other.
+		 */
+		db__msg_store_remove(base_msg, false);
+	}
 
 	return MOSQ_ERR_SUCCESS;
 }
