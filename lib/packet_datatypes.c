@@ -19,6 +19,7 @@ Contributors:
 #include "config.h"
 
 #include <assert.h>
+#include <arpa/inet.h>
 #include <errno.h>
 #include <string.h>
 
@@ -149,17 +150,15 @@ void packet__write_string(struct mosquitto__packet *packet, const char *str, uin
 
 int packet__read_uint16(struct mosquitto__packet_in *packet, uint16_t *word)
 {
-	uint8_t msb, lsb;
+	uint16_t val;
 
 	assert(packet);
 	if(packet->pos+2 > packet->remaining_length) return MOSQ_ERR_MALFORMED_PACKET;
 
-	msb = packet->payload[packet->pos];
-	packet->pos++;
-	lsb = packet->payload[packet->pos];
-	packet->pos++;
+	memcpy(&val, &packet->payload[packet->pos], sizeof(uint16_t));
+	packet->pos += sizeof(uint16_t);
 
-	*word = (uint16_t)((msb<<8) + lsb);
+	*word = ntohs(val);
 
 	return MOSQ_ERR_SUCCESS;
 }
@@ -167,25 +166,27 @@ int packet__read_uint16(struct mosquitto__packet_in *packet, uint16_t *word)
 
 void packet__write_uint16(struct mosquitto__packet *packet, uint16_t word)
 {
-	packet__write_byte(packet, MOSQ_MSB(word));
-	packet__write_byte(packet, MOSQ_LSB(word));
+	uint16_t bigendian = htons(word);
+
+	assert(packet);
+	assert(packet->pos+2 <= packet->packet_length);
+
+	memcpy(&packet->payload[packet->pos], &bigendian, 2);
+	packet->pos += 2;
 }
 
 
 int packet__read_uint32(struct mosquitto__packet_in *packet, uint32_t *word)
 {
 	uint32_t val = 0;
-	int i;
 
 	assert(packet);
 	if(packet->pos+4 > packet->remaining_length) return MOSQ_ERR_MALFORMED_PACKET;
 
-	for(i=0; i<4; i++){
-		val = (val << 8) + packet->payload[packet->pos];
-		packet->pos++;
-	}
+	memcpy(&val, &packet->payload[packet->pos], sizeof(uint32_t));
+	packet->pos += sizeof(uint32_t);
 
-	*word = val;
+	*word = ntohl(val);
 
 	return MOSQ_ERR_SUCCESS;
 }
@@ -193,10 +194,13 @@ int packet__read_uint32(struct mosquitto__packet_in *packet, uint32_t *word)
 
 void packet__write_uint32(struct mosquitto__packet *packet, uint32_t word)
 {
-	packet__write_byte(packet, (uint8_t)((word & 0xFF000000) >> 24));
-	packet__write_byte(packet, (uint8_t)((word & 0x00FF0000) >> 16));
-	packet__write_byte(packet, (uint8_t)((word & 0x0000FF00) >> 8));
-	packet__write_byte(packet, (uint8_t)((word & 0x000000FF)));
+	uint32_t bigendian = htonl(word);
+
+	assert(packet);
+	assert(packet->pos+4 <= packet->packet_length);
+
+	memcpy(&packet->payload[packet->pos], &bigendian, 4);
+	packet->pos += 4;
 }
 
 
