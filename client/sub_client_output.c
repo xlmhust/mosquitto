@@ -422,6 +422,42 @@ static void formatted_print_blank(char pad, int field_width)
 }
 
 
+#ifdef __STDC_IEC_559__
+static int formatted_print_float(const unsigned char *payload, int payloadlen, char format, char align, char pad, int field_width, int precision)
+{
+	float float_value;
+	double value;
+	if (format == 'f'){
+		if (sizeof(float_value) != payloadlen) {
+			return -1;
+		}
+		memcpy(&float_value, payload, sizeof(float_value));
+		value = float_value;
+	}else if(format == 'd'){
+		if (sizeof(value) != payloadlen) {
+			return -1;
+		}
+		memcpy(&value, payload, sizeof(value));
+	}
+
+	if(field_width == 0) {
+		printf("%.*f", precision, value);
+	}else{
+		if(align == '-'){
+			printf("%-*.*f", field_width, precision, value);
+		}else{
+			if(pad == '0'){
+				printf("%0*.*f", field_width, precision, value);
+			}else{
+				printf("%*.*f", field_width, precision, value);
+			}
+		}
+	}
+	return 0;
+}
+#endif
+
+
 static void formatted_print_int(int value, char align, char pad, int field_width)
 {
 	if(field_width == 0){
@@ -651,6 +687,20 @@ static void formatted_print_percent(const struct mosq_config *lcfg, const struct
 		case 'X':
 			write_payload(message->payload, message->payloadlen, 2, align, pad, field_width, precision);
 			break;
+
+#ifdef __STDC_IEC_559__
+		case 'f':
+			if(formatted_print_float(message->payload, message->payloadlen, 'f', align, pad, field_width, precision)) {
+				err_printf(lcfg, "requested float printing, but non-float data received");
+			}
+			break;
+
+		case 'd':
+			if(formatted_print_float(message->payload, message->payloadlen, 'd', align, pad, field_width, precision)) {
+				err_printf(lcfg, "requested double printing, but non-double data received");
+			}
+			break;
+#endif
 	}
 }
 

@@ -140,6 +140,12 @@ static int check_format(const char *str)
 #endif
 				}else if(str[i+1] == 'x' || str[i+1] == 'X'){
 					/* payload in hex */
+				}else if(str[i+1] == 'f' || str[i+1] == 'd'){
+					/* payload in float */
+#ifndef __STDC_IEC_559__
+					fprintf(stderr, "Error: Can't print float, missing __STDC_IEC_559__ standard support.\n");
+					return 1;
+#endif
 				}else{
 					fprintf(stderr, "Error: Invalid format specifier '%c'.\n", str[i+1]);
 					return 1;
