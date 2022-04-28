@@ -286,7 +286,7 @@ ssize_t net__read_ws(struct mosquitto *mosq, void *buf, size_t count)
 
 	if(mosq->wsd.payloadlen > 0){
 		if(count > mosq->wsd.payloadlen - (uint64_t)mosq->wsd.pos){
-			count = mosq->wsd.payloadlen - (uint64_t)mosq->wsd.pos + 1;
+			count = mosq->wsd.payloadlen - (uint64_t)mosq->wsd.pos;
 		}
 		len = net__read(mosq, buf, count);
 		if(len > 0){
