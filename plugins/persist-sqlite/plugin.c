@@ -42,7 +42,7 @@ static int conf_parse_uint(const char *in, const char *name, unsigned int *value
 		return MOSQ_ERR_INVAL;
 	}
 
-	*value = v;
+	*value = (unsigned int)v;
 	return MOSQ_ERR_SUCCESS;
 }
 
