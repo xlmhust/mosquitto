@@ -34,6 +34,29 @@ Contributors:
 static mosquitto_plugin_id_t *plg_id = NULL;
 static struct mosquitto_sqlite plg_data;
 
+static int conf_parse_uint(const char *in, const char *name, unsigned int *value)
+{
+	int v = atoi(in);
+	if(v <= 0){
+		mosquitto_log_printf(MOSQ_LOG_ERR, "Error: Invalid '%s' value in configuration.", name);
+		return MOSQ_ERR_INVAL;
+	}
+
+	*value = v;
+	return MOSQ_ERR_SUCCESS;
+}
+
+static void set_defaults(void)
+{
+	/* "normal" synchronous mode. */
+	plg_data.synchronous = 1;
+
+	/* 5 seconds */
+	plg_data.flush_period = 5;
+
+	plg_data.page_size = 4 * 1024;
+}
+
 int mosquitto_plugin_version(int supported_version_count, const int *supported_versions)
 {
 	int i;
@@ -54,8 +77,7 @@ int mosquitto_plugin_init(mosquitto_plugin_id_t *identifier, void **user_data, s
 	UNUSED(user_data);
 
 	memset(&plg_data, 0,sizeof(struct mosquitto_sqlite));
-	/* Default to "normal" synchronous mode. */
-	plg_data.synchronous = 1;
+	set_defaults();
 
 	for(i=0; i<option_count; i++){
 		if(!strcasecmp(options[i].key, "db_file")){
@@ -63,7 +85,6 @@ int mosquitto_plugin_init(mosquitto_plugin_id_t *identifier, void **user_data, s
 			if(plg_data.db_file == NULL){
 				return MOSQ_ERR_NOMEM;
 			}
-			break;
 		}else if(!strcasecmp(options[i].key, "sync")){
 			if(!strcasecmp(options[i].value, "extra")){
 				plg_data.synchronous = 3;
@@ -77,6 +98,12 @@ int mosquitto_plugin_init(mosquitto_plugin_id_t *identifier, void **user_data, s
 				mosquitto_log_printf(MOSQ_LOG_ERR, "Sqlite persistence: Invalid plugin_opt_sync value '%s'.", options[i].value);
 				return MOSQ_ERR_INVAL;
 			}
+		}else if(!strcasecmp(options[i].key, "flush_period")){
+			rc = conf_parse_uint(options[i].value, "flush_period", &plg_data.flush_period);
+			if(rc) return rc;
+		}else if(!strcasecmp(options[i].key, "page_size")){
+			rc = conf_parse_uint(options[i].value, "page_size", &plg_data.page_size);
+			if(rc) return rc;
 		}
 	}
 	if(plg_data.db_file == NULL){
