@@ -927,12 +927,12 @@ mosquitto_sub -t 'bbc/#' -T bbc/bbc1 --remove-retained</programlisting>
 
 		<refsect2>
 			<title>Flag characters</title>
-			<para>The parameters %A, %C, %E, %F, %I, %l, %m, %p, %R, %S, %t, %f, %d, %x, and %X can have optional flags immediately after the % character.</para>
+			<para>The parameters %A, %C, %d, %E, %F, %f, %I, %l, %m, %p, %R, %S, %t, %x, and %X can have optional flags immediately after the % character.</para>
 			<variablelist>
 				<varlistentry>
 					<term><option>0</option></term>
 					<listitem><para>The value should be zero padded.
-					This applies to the parameters %A, %E, %F, %l, %m, %S, %f, %d, %X, and %x.
+					This applies to the parameters %A, %E, %d, %F, %f, %l, %m, %S, %X, and %x.
 					It will be ignored for other parameters. If used with the
 				<option>-</option> flag, the <option>0</option> flag will be
 					ignored.</para></listitem>
@@ -954,7 +954,7 @@ mosquitto_sub -t 'bbc/#' -T bbc/bbc1 --remove-retained</programlisting>
                     option to set their field width in a similar way to regular
                     printf style formats, i.e. this sets the minimum width when
                     printing this parameter. This applies to the options %A, %C,
-                    %E, %F, %I, %l, %m, %p, %R, %S, %t, %f, %d, %x, %X.
+                    %d, %E, %F, %f, %I, %l, %m, %p, %R, %S, %t, %x, %X.
                 </para>
 				<para>
 					For example <option>%10t</option> would set the minimum topic
@@ -1007,8 +1007,10 @@ mosquitto_sub -t 'bbc/#' -T bbc/bbc1 --remove-retained</programlisting>
 				<listitem><para><option>%C</option> the MQTT v5 content-type property, if present.</para></listitem>
 				<listitem><para><option>%D</option> the MQTT v5 correlation-data property, if present. Note that this
 						property is specified as binary data, so may produce non-printable characters.</para></listitem>
+				<listitem><para><option>%d</option> the payload is treated as 8byte IEEE754 float (double).</para></listitem>
 				<listitem><para><option>%E</option> the MQTT v5 message-expiry-interval property, if present.</para></listitem>
 				<listitem><para><option>%F</option> the MQTT v5 payload-format-indicator property, if present.</para></listitem>
+				<listitem><para><option>%f</option> the payload is treated as 4byte IEEE754 float.</para></listitem>
 				<listitem><para><option>%l</option> the length of the payload in bytes.</para></listitem>
 				<listitem><para><option>%m</option> the message id (only relevant for messages with QoS>0).</para></listitem>
 				<listitem><para><option>%P</option> the MQTT v5 user-property property, if present. This will be printed in the
@@ -1022,8 +1024,6 @@ mosquitto_sub -t 'bbc/#' -T bbc/bbc1 --remove-retained</programlisting>
 				<listitem><para><option>%t</option> the message topic.</para></listitem>
 				<listitem><para><option>%x</option> the payload with each byte as a hexadecimal number (lower case).</para></listitem>
 				<listitem><para><option>%X</option> the payload with each byte as a hexadecimal number (upper case).</para></listitem>
-				<listitem><para><option>%f</option> the payload is treated as 4byte IEEE754 float.</para></listitem>
-				<listitem><para><option>%d</option> the payload is treated as 8byte IEEE754 float (double).</para></listitem>
 			</itemizedlist>
 		</refsect2>
 
