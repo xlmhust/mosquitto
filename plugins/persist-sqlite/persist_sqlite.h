@@ -47,7 +47,9 @@ struct mosquitto_sqlite {
 	sqlite3_stmt *retain_msg_remove_stmt;
 	time_t last_transaction;
 	int synchronous;
-	int event_count;
+	unsigned int event_count;
+	unsigned int flush_period;
+	unsigned int page_size;
 };
 
 int persist_sqlite__init(struct mosquitto_sqlite *ms);

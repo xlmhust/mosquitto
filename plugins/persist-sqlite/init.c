@@ -268,11 +268,12 @@ int persist_sqlite__init(struct mosquitto_sqlite *ms)
 				ms->db_file, sqlite3_errstr(rc));
 		return MOSQ_ERR_UNKNOWN;
 	}
+	snprintf(buf, sizeof(buf), "PRAGMA page_size=%u;", ms->page_size);
+	rc = sqlite3_exec(ms->db, buf, NULL, NULL, NULL);
+	if(rc) goto fail;
 	rc = sqlite3_exec(ms->db, "PRAGMA journal_mode=WAL;", NULL, NULL, NULL);
 	if(rc) goto fail;
 	rc = sqlite3_exec(ms->db, "PRAGMA foreign_keys = ON;", NULL, NULL, NULL);
-	if(rc) goto fail;
-	rc = sqlite3_exec(ms->db, "PRAGMA page_size=32768;", NULL, NULL, NULL);
 	if(rc) goto fail;
 	snprintf(buf, sizeof(buf), "PRAGMA synchronous=%d;", ms->synchronous);
 	rc = sqlite3_exec(ms->db, buf, NULL, NULL, NULL);
