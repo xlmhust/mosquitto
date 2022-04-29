@@ -10,6 +10,9 @@ Client library:
 - Fix threads library detection on Windows under cmake. Bumps the minimum
   cmake version to 3.1, which is still ancient.
 
+Clients:
+- Fix mosquitto_pub incorrectly reusing topic aliases when reconnecting.
+  Closes #2494.
 
 2.0.14 - 2021-11-17
 ===================
