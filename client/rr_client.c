@@ -194,8 +194,9 @@ static void print_usage(void)
 	printf("             Defaults to MQTT v5, where the Request-Response feature will be used, but v3.1.1 can also be used\n");
 	printf("             with v3.1.1 brokers.\n");
 	printf("mosquitto_rr version %s running on libmosquitto %d.%d.%d.\n\n", VERSION, major, minor, revision);
-	printf("Usage: mosquitto_rr {[-h host] [--unix path] [-p port] [-u username] [-P password] [--ws] -t topic | -L URL} -e response-topic\n");
-	printf("                    [-c] [-k keepalive] [-q qos] [-R] [-x session-expiry-interval\n");
+	printf("Usage: mosquitto_rr {[-h host] [--unix path] [-p port] [-u username] [-P password] -t topic | -L URL} -e response-topic\n");
+	printf("                    {-f file | -l | -n | -m message}\n");
+	printf("                    [-c] [-k keepalive] [-q qos] [-R] [-x session-expiry-interval]\n");
 	printf("                    [-F format]\n");
 #ifndef WIN32
 	printf("                    [-W timeout_secs]\n");
@@ -328,6 +329,18 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "\nUse 'mosquitto_rr --help' to see usage.\n");
 		}
 		goto cleanup;
+	}
+
+	if(cfg.pub_mode == MSGMODE_STDIN_FILE){
+		if(load_stdin()){
+			err_printf(&cfg, "Error loading input from stdin.\n");
+			goto cleanup;
+		}
+	}else if(cfg.file_input){
+		if(load_file(cfg.file_input)){
+			err_printf(&cfg, "Error loading input file \"%s\".\n", cfg.file_input);
+			goto cleanup;
+		}
 	}
 
 	if(!cfg.topic || cfg.pub_mode == MSGMODE_NONE || !cfg.response_topic){
