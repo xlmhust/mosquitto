@@ -564,6 +564,14 @@ int config__parse_args(struct mosquitto__config *config, int argc, char *argv[])
 	if(db.verbose){
 		config->log_type = UINT_MAX;
 	}
+
+	if(getenv("MOSQUITTO_PERSISTENCE_LOCATION")){
+		mosquitto__FREE(config->persistence_location);
+		config->persistence_location = mosquitto_strdup(getenv("MOSQUITTO_PERSISTENCE_LOCATION"));
+		if(!config->persistence_location){
+			return MOSQ_ERR_NOMEM;
+		}
+	}
 	return config__check(config);
 }
 

@@ -865,3 +865,8 @@ BROKER_EXPORT int mosquitto_broker_node_id_set(uint16_t id)
 		return MOSQ_ERR_SUCCESS;
 	}
 }
+
+BROKER_EXPORT const char *mosquitto_persistence_location(void)
+{
+	return db.config->persistence_location;
+}

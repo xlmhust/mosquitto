@@ -1148,6 +1148,20 @@ int mosquitto_persist_retain_msg_set(const char *topic, uint64_t store_id);
  */
 int mosquitto_persist_retain_msg_delete(const char *topic);
 
+/* Function: mosquitto_persistence_location
+ *
+ * Returns the `persistence_location` config option, or the contents of the
+ * MOSQUITTO_PERSISTENCE_LOCATION environment variable, if set.
+ *
+ * This location should be used by plugins needing to store persistent data.
+ * Use of sub directories is recommended.
+ *
+ * Returns:
+ *   A valid pointer to the persistence location string
+ *   A NULL pointer if neither the option nor the variable are set
+ */
+const char *mosquitto_persistence_location(void);
+
 #ifdef __cplusplus
 }
 #endif

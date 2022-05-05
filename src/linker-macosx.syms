@@ -23,6 +23,7 @@ _mosquitto_kick_client_by_username
 _mosquitto_log_printf
 _mosquitto_log_vprintf
 _mosquitto_malloc
+_mosquitto_persistence_location
 _mosquitto_persist_base_msg_add
 _mosquitto_persist_base_msg_delete
 _mosquitto_persist_client_add

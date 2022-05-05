@@ -105,6 +105,8 @@ Plugins / plugin interface:
   network loop, to give chance for PUBACK/PUBREC to be sent. Closes #2474.
 - Add MOSQ_EVT_SUBSCRIBE and MOSQ_EVT_UNSUBSCRIBE events that are called when
   subscribe/unsubscribes actually succeed.
+- Add `mosquitto_persistence_location()` for plugins to use to find a valid
+  location for storing persistent data.
 
 Client library:
 - Add MOSQ_OPT_DISABLE_SOCKETPAIR to allow the disabling of the socketpair
