@@ -47,7 +47,6 @@ if(CJSON_FOUND AND WITH_TLS)
 			"${mosquitto_SOURCE_DIR}/deps"
 		)
 	endif()
-	link_directories(${CLIENT_DIR} "${mosquitto_SOURCE_DIR}")
 
 	set_target_properties(mosquitto_dynamic_security PROPERTIES
 		PREFIX ""
@@ -59,8 +58,8 @@ if(CJSON_FOUND AND WITH_TLS)
 			cJSON
 			OpenSSL::SSL
 	)
+	target_link_libraries(mosquitto_dynamic_security PRIVATE mosquitto)
 	if(WIN32)
-		target_link_libraries(mosquitto_dynamic_security PRIVATE mosquitto)
 		install(TARGETS mosquitto_dynamic_security
 			DESTINATION "${CMAKE_INSTALL_BINDIR}")
 	else()

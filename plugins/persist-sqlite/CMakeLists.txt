@@ -26,7 +26,6 @@ if(SQLITE3_FOUND AND CJSON_FOUND)
 	target_include_directories(mosquitto_persist_sqlite PRIVATE
 		${CLIENT_INC} ${SQLITE3_INCLUDE_DIR}
 	)
-	link_directories(${CLIENT_DIR} "${mosquitto_SOURCE_DIR}")
 
 	set_target_properties(mosquitto_persist_sqlite PROPERTIES
 		PREFIX ""
@@ -38,9 +37,7 @@ if(SQLITE3_FOUND AND CJSON_FOUND)
 			${SQLITE3_LIBRARIES}
 			cJSON
 	)
-	if(WIN32)
-		target_link_libraries(mosquitto_persist_sqlite PRIVATE mosquitto)
-	endif()
+	target_link_libraries(mosquitto_persist_sqlite PRIVATE mosquitto)
 
 	install(TARGETS mosquitto_persist_sqlite
 		RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
