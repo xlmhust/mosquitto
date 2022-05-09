@@ -219,7 +219,7 @@ if(WITH_WEBSOCKETS)
 endif()
 
 if(CJSON_FOUND)
-	set (MOSQ_LIBS ${MOSQ_LIBS} cjson)
+	target_link_libraries(mosquitto PRIVATE cJSON)
 endif()
 
 target_include_directories(mosquitto PRIVATE

@@ -1,5 +1,4 @@
 if(SQLITE3_FOUND AND CJSON_FOUND)
-	add_definitions("-DWITH_CJSON")
 	set(CLIENT_INC
 		"${SQLITE3_INCLUDE_DIRS}"
 		"${STDBOOL_H_PATH}"
@@ -34,7 +33,11 @@ if(SQLITE3_FOUND AND CJSON_FOUND)
 		POSITION_INDEPENDENT_CODE 1
 	)
 
-	target_link_libraries(mosquitto_persist_sqlite PRIVATE ${SQLITE3_LIBRARIES})
+	target_link_libraries(mosquitto_persist_sqlite
+		PRIVATE
+			${SQLITE3_LIBRARIES}
+			cJSON
+	)
 	if(WIN32)
 		target_link_libraries(mosquitto_persist_sqlite PRIVATE mosquitto)
 	endif()
