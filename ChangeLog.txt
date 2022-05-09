@@ -139,6 +139,9 @@ Clients:
 - Add float printing option to mosquitto_sub.
 - Fix `-f` and `-s` options in mosquitto_rr.
 
+Build:
+- Increased CMake minimal required version to 3.14, which is required for the
+  preinstalled SQLite3 find module.
 
 2.0.14 - 2021-11-17
 ===================
