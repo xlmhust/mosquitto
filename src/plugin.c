@@ -157,23 +157,29 @@ int plugin__handle_message(struct mosquitto *context, struct mosquitto_msg_store
 
 	DL_FOREACH(opts->plugin_callbacks.message, cb_base){
 		rc = cb_base->cb(MOSQ_EVT_MESSAGE, &event_data, cb_base->userdata);
+
+		if(stored->topic != event_data.topic){
+			mosquitto__free(stored->topic);
+			stored->topic = event_data.topic;
+		}
+
+		if(stored->payload != event_data.payload){
+			mosquitto__free(stored->payload);
+			stored->payload = event_data.payload;
+			stored->payloadlen = event_data.payloadlen;
+		}
+
+		if(stored->properties != event_data.properties){
+			mosquitto_property_free_all(stored->properties);
+			stored->properties = event_data.properties;
+		}
+
 		if(rc != MOSQ_ERR_SUCCESS){
 			break;
 		}
 	}
 
-	if(stored->topic != event_data.topic){
-		mosquitto__free(stored->topic);
-		stored->topic = event_data.topic;
-	}
-
-	if(stored->payload != event_data.payload){
-		mosquitto__free(stored->payload);
-		stored->payload = event_data.payload;
-		stored->payloadlen = event_data.payloadlen;
-	}
 	stored->retain = event_data.retain;
-	stored->properties = event_data.properties;
 
 	return rc;
 }
