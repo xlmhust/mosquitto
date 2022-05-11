@@ -5,6 +5,8 @@ Broker:
 - Fix memory leak when a plugin modifies the topic of a message in
   MOSQ_EVT_MESSAGE.
 - Fix bridge `restart_timeout` not being honoured.
+- Fix potential memory leaks if a plugin modifies the message in the
+  MOSQ_EVT_MESSAGE event.
 
 Client library:
 - Fix threads library detection on Windows under cmake. Bumps the minimum
