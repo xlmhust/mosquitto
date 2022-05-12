@@ -4,7 +4,7 @@
 # To configure the build options either use the CMake gui, or run the command
 # line utility including the "-i" option.
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
 set (VERSION 2.1.0)
 project(mosquitto
@@ -50,7 +50,7 @@ endif()
 
 option(WITH_SQLITE "Include sqlite persistence support?" ON)
 if (WITH_SQLITE)
-	find_package(sqlite3 REQUIRED)
+	find_package(SQLite3 REQUIRED)
 	add_definitions("-DWITH_SQLITE")
 endif()
 
