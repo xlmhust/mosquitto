@@ -7,6 +7,8 @@ Broker:
 - Fix bridge `restart_timeout` not being honoured.
 - Fix potential memory leaks if a plugin modifies the message in the
   MOSQ_EVT_MESSAGE event.
+- Fix unused flags in CONNECT command being forced to be 0, which is not
+  required for MQTT v3.1. Closes #2522.
 
 Client library:
 - Fix threads library detection on Windows under cmake. Bumps the minimum
