@@ -11,6 +11,8 @@ Broker:
 Client library:
 - Fix threads library detection on Windows under cmake. Bumps the minimum
   cmake version to 3.1, which is still ancient.
+- Fix use of `MOSQ_OPT_TLS_ENGINE` being unable to be used due to the openssl
+  ctx not being initialised until starting to connect. Closes #2537.
 
 Clients:
 - Fix mosquitto_pub incorrectly reusing topic aliases when reconnecting.

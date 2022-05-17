@@ -1565,6 +1565,9 @@ libmosq_EXPORT int mosquitto_int_option(struct mosquitto *mosq, enum mosq_opt_t 
  *	MOSQ_OPT_TLS_ENGINE - Configure the client for TLS Engine support.
  *	          Pass a TLS Engine ID to be used when creating TLS
  *	          connections. Must be set before <mosquitto_connect>.
+ *	          Must be a valid engine, and note that the string will not be used
+ *	          until a connection attempt is made so this function will return
+ *	          success even if an invalid engine string is passed.
  *
  *	MOSQ_OPT_TLS_KEYFORM - Configure the client to treat the keyfile
  *	          differently depending on its type.  Must be set
