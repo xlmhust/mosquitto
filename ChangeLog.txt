@@ -11,6 +11,8 @@ Broker:
   required for MQTT v3.1. Closes #2522.
 - Improve documentation of `persistent_client_expiration` option.
   Closes #2404.
+- Add clients to session expiry check list when restarting and reloading from
+  persistence. Closes #2546.
 
 Client library:
 - Fix threads library detection on Windows under cmake. Bumps the minimum
