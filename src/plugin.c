@@ -170,7 +170,7 @@ int plugin__handle_message(struct mosquitto *context, struct mosquitto_msg_store
 		}
 
 		if(stored->properties != event_data.properties){
-			mosquitto_property_free_all(stored->properties);
+			mosquitto_property_free_all(&stored->properties);
 			stored->properties = event_data.properties;
 		}
 
