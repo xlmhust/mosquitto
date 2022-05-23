@@ -713,6 +713,7 @@ int mosquitto_security_auth_continue(struct mosquitto_db *db, struct mosquitto *
  * Session expiry
  * ============================================================ */
 int session_expiry__add(struct mosquitto_db *db, struct mosquitto *context);
+int session_expiry__add_from_persistence(struct mosquitto_db *db, struct mosquitto *context, time_t expiry_time);
 void session_expiry__remove(struct mosquitto *context);
 void session_expiry__remove_all(struct mosquitto_db *db);
 void session_expiry__check(struct mosquitto_db *db, time_t now);
