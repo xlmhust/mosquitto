@@ -57,6 +57,8 @@ Broker:
   to trust default CA certificates. Closes #2473.
 - Add `--test-config` option which can be used to test a configuration file
   before trying to use it in a live broker. Closes #2521.
+- Print messages in mosquitto_passwd when adding/updating passwords.
+  Closes #2544.
 
 Plugins / plugin interface:
 - Add persist-sqlite plugin.
