@@ -13,6 +13,8 @@ Broker:
   Closes #2404.
 - Add clients to session expiry check list when restarting and reloading from
   persistence. Closes #2546.
+- Fix bridges not sending failure notification messages to the local broker if
+  the remote bridge connection fails. Closes #2467. Closes #1488.
 
 Client library:
 - Fix threads library detection on Windows under cmake. Bumps the minimum
