@@ -69,3 +69,12 @@ int send__pubrel(struct mosquitto *mosq, uint16_t mid)
 	return MOSQ_ERR_SUCCESS;
 }
 
+int session_expiry__add_from_persistence(struct mosquitto_db *db, struct mosquitto *context, time_t expiry_time)
+{
+	UNUSED(db);
+	UNUSED(context);
+	UNUSED(expiry_time);
+
+	return 0;
+}
+

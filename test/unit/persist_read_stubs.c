@@ -148,3 +148,11 @@ void db__msg_store_ref_inc(struct mosquitto_msg_store *store)
 	store->ref_count++;
 }
 
+int session_expiry__add_from_persistence(struct mosquitto_db *db, struct mosquitto *context, time_t expiry_time)
+{
+	UNUSED(db);
+	UNUSED(context);
+	UNUSED(expiry_time);
+
+	return 0;
+}
