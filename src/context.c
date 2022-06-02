@@ -29,6 +29,7 @@ Contributors:
 #include "memory_mosq.h"
 #include "packet_mosq.h"
 #include "property_mosq.h"
+#include "sys_tree.h"
 #include "time_mosq.h"
 #include "util_mosq.h"
 #include "will_mosq.h"
@@ -164,6 +165,8 @@ void context__cleanup(struct mosquitto *context, bool force_free)
 		context->out_packet = context->out_packet->next;
 		mosquitto__FREE(packet);
 	}
+	G_OUT_PACKET_COUNT_DEC(context->out_packet_count);
+	G_OUT_PACKET_BYTES_DEC(context->out_packet_bytes);
 	context->out_packet_count = 0;
 	context->out_packet_bytes = 0;
 #if defined(WITH_BROKER) && defined(__GLIBC__) && defined(WITH_ADNS)

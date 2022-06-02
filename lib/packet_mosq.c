@@ -46,6 +46,10 @@ Contributors:
 #  define G_BYTES_SENT_INC(A)
 #  define G_MSGS_SENT_INC(A)
 #  define G_PUB_MSGS_SENT_INC(A)
+#  define G_OUT_PACKET_COUNT_INC(A)
+#  define G_OUT_PACKET_COUNT_DEC(A)
+#  define G_OUT_PACKET_BYTES_INC(A)
+#  define G_OUT_PACKET_BYTES_DEC(A)
 #endif
 
 int packet__alloc(struct mosquitto__packet **packet, uint8_t command, uint32_t remaining_length)
@@ -120,6 +124,8 @@ void packet__cleanup_all_no_locks(struct mosquitto *mosq)
 
 		mosquitto__FREE(packet);
 	}
+	G_OUT_PACKET_COUNT_DEC(mosq->out_packet_count);
+	G_OUT_PACKET_BYTES_DEC(mosq->out_packet_bytes);
 	mosq->out_packet_count = 0;
 	mosq->out_packet_bytes = 0;
 	mosq->out_packet_last = NULL;
@@ -146,6 +152,8 @@ static void packet__queue_append(struct mosquitto *mosq, struct mosquitto__packe
 	mosq->out_packet_last = packet;
 	mosq->out_packet_count++;
 	mosq->out_packet_bytes += packet->packet_length;
+	G_OUT_PACKET_COUNT_INC(1);
+	G_OUT_PACKET_BYTES_INC(packet->packet_length);
 	pthread_mutex_unlock(&mosq->out_packet_mutex);
 }
 
@@ -228,6 +236,8 @@ struct mosquitto__packet *packet__get_next_out(struct mosquitto *mosq)
 	if(mosq->out_packet){
 		mosq->out_packet_count--;
 		mosq->out_packet_bytes -= mosq->out_packet->packet_length;
+		G_OUT_PACKET_COUNT_DEC(1);
+		G_OUT_PACKET_BYTES_DEC(mosq->out_packet->packet_length);
 
 		mosq->out_packet = mosq->out_packet->next;
 		if(!mosq->out_packet){
