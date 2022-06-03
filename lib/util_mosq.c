@@ -109,7 +109,6 @@ int mosquitto__check_keepalive(struct mosquitto *mosq)
 				context__send_will(mosq);
 			}
 #  endif
-#endif
 			net__socket_close(mosq);
 #else
 			net__socket_close(mosq);
