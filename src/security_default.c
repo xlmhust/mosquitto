@@ -321,24 +321,28 @@ static int add__acl_pattern(struct mosquitto__security_options *security_opts, c
 	acl->next = NULL;
 
 	acl->ccount = 0;
-	s = local_topic;
-	while(s){
-		s = strstr(s, "%c");
-		if(s){
+	for (s = local_topic; s != NULL; ) {
+		if (s[0] == '\0'|| s[1] == '\0') {
+			break;
+		} else if (s[0] == '%' && s[1] == 'c') {
 			acl->ccount++;
-			s+=2;
+			s += 2;
+		} else {
+			s++;
 		}
 	}
 
 	acl->ucount = 0;
-	s = local_topic;
-	while(s){
-		s = strstr(s, "%u");
-		if(s){
-			acl->ucount++;
-			s+=2;
-		}
-	}
+        for (s = local_topic; s != NULL; ) {
+                if (s[0] == '\0'|| s[1] == '\0') {
+                        break;
+                } else if (s[0] == '%' && s[1] == 'u') {
+                        acl->ucount++;
+                        s += 2;
+                } else {
+                        s++;
+                }
+        }
 
 	if(acl->ccount == 0 && acl->ucount == 0){
 		log__printf(NULL, MOSQ_LOG_WARNING,
